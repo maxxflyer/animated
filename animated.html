@@ -1,0 +1,151 @@
+<html><head> 
+    <title>Example 10.11 - Video texture</title> 
+><script type="text/javascript" src="three.js"></script> 
+ 
+ 
+    <style>
+          body {
+              /* set margin to 0 and overflow to hidden, to go fullscreen */
+              margin: 0;
+              overflow: hidden;
+          }
+      </style> 
+
+</head> 
+   <body style="zoom: 1;"> 
+   
+    <video id="video" style="position: absolute; left: 15px; top: 75px; display: none;" src="https://ipfs.io/ipfs/Qmf6nygbSAfmksDbn9ntNihJqh5qPjbTYKiGDKQqC762tV?filename=mp4.mp4" controls="true" autoplay="true"></video> 
+    <!-- Div which will hold the Output --> 
+    <div id="WebGL-output"> 
+    <canvas width="1920" height="832" style="width: 1536px; height: 666px;"></canvas></div> 
+    <!-- Javascript code that runs our Three.js examples --> 
+    <script type="text/javascript">
+  
+      var texture;
+  
+      // once everything is loaded, we run our Three.js stuff.
+
+  
+      
+  
+          // create a scene, that will hold all our elements such as objects, cameras and lights.
+          var scene = new THREE.Scene();
+  
+          // create a camera, which defines where we're looking at.
+          var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  
+          // create a render and set the size
+          var webGLRenderer = new THREE.WebGLRenderer();
+          webGLRenderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
+          webGLRenderer.setSize(window.innerWidth, window.innerHeight);
+          webGLRenderer.shadowMapEnabled = true;
+  
+          var video = document.getElementById('video');
+          texture = new THREE.Texture(video);
+          texture.minFilter = THREE.LinearFilter;
+          texture.magFilter = THREE.LinearFilter;
+          texture.format = THREE.RGBFormat;
+          texture.generateMipmaps = false;
+  
+  
+          var cube;
+          let geometry = new THREE.PlaneGeometry( 0.1, 0.15 );
+ // var geometry = new THREE.SphereGeometry(100, 20, 20);
+  var material = new THREE.MeshBasicMaterial({map: texture});
+  var front = new THREE.Mesh(geometry, material);
+  
+          //cube = createMesh(new THREE.CubeGeometry(22, 16, 0.2), "floor-wood.jpg");
+          //cube.position.y = 2;
+          //scene.add(front);
+          front.position.set( 0, 0, 0 );
+  front.rotation.x = - Math.PI * 0.5;
+  front.rotation.y = - Math.PI * 0.5;
+  front.rotation.z = - Math.PI * 0.5;
+  front.receiveShadow = true;
+ 
+  scene.add(front);
+  
+          // position and point the camera to the center of the scene
+          camera.position.x = 00;
+          camera.position.y = 1;
+          camera.position.z = 28;
+          camera.lookAt(new THREE.Vector3(0, 0, 0));
+  
+          var ambiLight = new THREE.AmbientLight(0x141414)
+          scene.add(ambiLight);
+  
+          var light = new THREE.DirectionalLight();
+          light.position.set(0, 30, 20);
+          scene.add(light);
+  
+          // add the output of the renderer to the html element
+          document.getElementById("WebGL-output").append(webGLRenderer.domElement);
+  
+          // call the render function
+          var step = 0;
+  
+  //        var polyhedron = createMesh(new THREE.PolyhedronGeometry(vertices, faces, controls.radius, controls.detail));
+  
+          // setup the control gui
+          var controls = new function () {
+  
+              this.showVideo = false;
+              this.rotate = false;
+  
+              this.showCanvas = function () {
+                  if (controls.showVideo) {
+                      $('#video').show();
+                  } else {
+                      $('#video').hide();
+                  }
+              }
+  
+          };
+  
+          render();
+  
+          function createMesh(geom) {
+  
+              var materialArray = [];
+              materialArray.push(new THREE.MeshBasicMaterial({ color: 0x0051ba  }));
+              materialArray.push(new THREE.MeshBasicMaterial({ color: 0x0051ba  }));
+              materialArray.push(new THREE.MeshBasicMaterial({ color: 0x0051ba  }));
+              materialArray.push(new THREE.MeshBasicMaterial({ color: 0x0051ba   }));
+              materialArray.push(new THREE.MeshBasicMaterial({ map: texture }));
+              materialArray.push(new THREE.MeshBasicMaterial({ color: 0xff51ba  }));
+              var faceMaterial = new THREE.MeshFaceMaterial(materialArray);
+  
+  
+              // create a multimaterial
+              var mesh = new THREE.Mesh(geom, faceMaterial);
+  
+              return mesh;
+          }
+  
+          function render() {
+              //stats.update();
+  
+  
+              if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                  if (texture) texture.needsUpdate = true;
+              }
+  
+              if (controls.rotate) {
+                  cube.rotation.x += -0.01;
+                  cube.rotation.y += -0.01;
+                  cube.rotation.z += -0.01;
+              }
+  
+  
+              // render using requestAnimationFrame
+              requestAnimationFrame(render);
+              webGLRenderer.render(scene, camera);
+          }
+  
+      
+     
+  
+  
+  </script>   
+   
+  <div class="dg ac"><div class="dg main a" style="width: 245px;"><div style="width: 6px; margin-left: -3px; height: 56px; cursor: ew-resize; position: absolute;"></div><ul style="height: auto;"><li class="cr boolean"><div><span class="property-name">rotate</span><div class="c"><input type="checkbox" checked="checked"></div></div></li><li class="cr boolean"><div><span class="property-name">showVideo</span><div class="c"><input type="checkbox" checked="checked"></div></div></li></ul><div class="close-button" style="width: 245px;">Close Controls</div></div></div></body></html>
