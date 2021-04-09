@@ -1,6 +1,6 @@
 <html><head> 
     <title>Example 10.11 - Video texture</title> 
-><script type="text/javascript" src="three.js"></script> 
+<script type="text/javascript" src="three.js"></script> 
  
  
     <style>
@@ -14,11 +14,12 @@
 </head> 
    <body style="zoom: 1;"> 
    
-    <video id="video" style="position: absolute; left: 15px; top: 75px; display: none;" src="mp4.mp4" controls="true" autoplay="true"></video> 
+    <video id="video" loop="true" style="position: absolute; left: 15px; top: 75px; display: none" src="https://ipfs.io/ipfs/QmdFAhi4gB8ZycLcvVGr5DbEPSk2mbCy71XkwwSo3DAhUQ?filename=card_cyphervault.mp4" controls="true" autoplay="true" crossorigin="anonymous"></video> 
     <!-- Div which will hold the Output --> 
     <div id="WebGL-output"> 
-    <canvas width="1920" height="832" style="width: 1536px; height: 666px;"></canvas></div> 
-    <!-- Javascript code that runs our Three.js examples --> 
+    <!--<canvas width="1920" height="832" style="width: 1536px; height: 666px;"></canvas>
+   Javascript code that runs our Three.js examples --> 
+</div> 
     <script type="text/javascript">
   
       var texture;
@@ -49,7 +50,7 @@
   
   
           var cube;
-          let geometry = new THREE.PlaneGeometry( 0.1, 0.15 );
+          let geometry = new THREE.PlaneGeometry( 10, 15 );
  // var geometry = new THREE.SphereGeometry(100, 20, 20);
   var material = new THREE.MeshBasicMaterial({map: texture});
   var front = new THREE.Mesh(geometry, material);
@@ -130,11 +131,11 @@
                   if (texture) texture.needsUpdate = true;
               }
   
-              if (controls.rotate) {
-                  cube.rotation.x += -0.01;
-                  cube.rotation.y += -0.01;
-                  cube.rotation.z += -0.01;
-              }
+      
+                  front.rotation.x += -0.01;
+                  front.rotation.y += -0.01;
+                  front.rotation.z += -0.01;
+              
   
   
               // render using requestAnimationFrame
